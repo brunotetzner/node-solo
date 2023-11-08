@@ -4,7 +4,7 @@ Gympass style app.
 
 ## RF ( O que a aplicação precisa fazer)
 
-- [ ] Deve ser possivel se cadastrar
+- [x] Deve ser possivel se cadastrar
 - [ ] Deve ser possível se autenticar
 - [ ] Deve ser possível obter o perfil de um usuário logado
 - [ ] Deve ser possível obter o numero de check-ins realizados pelo usuário logado
