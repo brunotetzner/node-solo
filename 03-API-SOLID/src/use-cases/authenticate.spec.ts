@@ -33,7 +33,7 @@ describe("Authenticate Use case", () => {
       password_hash: await hash("123456", 6),
     });
 
-    expect(
+    await expect(
       async () =>
         await sut.execute({
           email: "jondoe1@example.com",
@@ -48,7 +48,7 @@ describe("Authenticate Use case", () => {
       password_hash: await hash("123456", 6),
     });
 
-    expect(
+    await expect(
       async () =>
         await sut.execute({
           email: "jondoe@example.com",
