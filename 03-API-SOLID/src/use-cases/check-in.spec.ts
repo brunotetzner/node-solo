@@ -9,7 +9,7 @@ describe("Check in Use case", () => {
     checkInsRepository = new InMemoryCheckInsRepository();
     sut = new CheckInUseCase(checkInsRepository);
   });
-  it("Should be able to register", async () => {
+  it("Should be able to check in", async () => {
     const { checkIn } = await sut.execute({
       gymId: "gym-1",
       userId: "user-1",
