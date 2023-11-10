@@ -1,8 +1,9 @@
 import { describe, expect, it, beforeEach, vi, afterEach } from "vitest";
 import { InMemoryCheckInsRepository } from "@/repositories/in-memory/in-memory-check-ins-repository";
 import { CheckInUseCase } from "./check-in";
-import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gym-repository";
-import { Decimal } from "@prisma/client/runtime/library";
+import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gyms-repository";
+import { maxNumberOfCheckinsError } from "./errors/max-number-of-check-ins-error";
+import { maxDistanceError } from "./errors/max-distance-error";
 
 let checkInsRepository: InMemoryCheckInsRepository;
 let gymsRepository: InMemoryGymsRepository;
@@ -14,13 +15,13 @@ describe("Check in Use case", () => {
     gymsRepository = new InMemoryGymsRepository();
     sut = new CheckInUseCase(checkInsRepository, gymsRepository);
 
-    gymsRepository.items.push({
+    gymsRepository.create({
       id: "gym-1",
       title: "javascript gym",
       description: "javascript gym",
       phone: "123456789",
-      latitude: new Decimal(0),
-      longitude: new Decimal(0),
+      latitude: 0,
+      longitude: 0,
     });
     vi.useFakeTimers();
   });
@@ -59,7 +60,7 @@ describe("Check in Use case", () => {
         userLatitude: 0,
         userLongitude: 0,
       })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(maxNumberOfCheckinsError);
   });
 
   it("Should be able to check in twice but in different days", async () => {
@@ -84,13 +85,13 @@ describe("Check in Use case", () => {
   });
 
   it("Should not be able to check in on a distant gym", async () => {
-    gymsRepository.items.push({
+    gymsRepository.create({
       id: "gym-2",
       title: "javascript gym",
       description: "javascript gym",
       phone: "123456789",
-      latitude: new Decimal(-22.3280133),
-      longitude: new Decimal(-47.1799202),
+      latitude: -22.3280133,
+      longitude: -47.1799202,
     });
     await expect(() =>
       sut.execute({
@@ -99,6 +100,6 @@ describe("Check in Use case", () => {
         userLatitude: -22.3439955,
         userLongitude: -47.154902,
       })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(maxDistanceError);
   });
 });
