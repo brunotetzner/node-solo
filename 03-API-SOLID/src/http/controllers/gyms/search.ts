@@ -15,5 +15,5 @@ export async function search(request: FastifyRequest, reply: FastifyReply) {
     query,
     page,
   });
-  return reply.status(201).send({ gyms });
+  return reply.status(200).send({ gyms });
 }

@@ -7,8 +7,8 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     title: z.string(),
     description: z.string().nullable(),
     phone: z.string().nullable(),
-    latitude: z.number().refine((n) => Math.abs(n) <= 90),
-    longitude: z.number().refine((n) => Math.abs(n) <= 180),
+    latitude: z.coerce.number().refine((n) => Math.abs(n) <= 90),
+    longitude: z.coerce.number().refine((n) => Math.abs(n) <= 180),
   });
   const { title, description, phone, latitude, longitude } =
     createGymSchema.parse(request.body);
